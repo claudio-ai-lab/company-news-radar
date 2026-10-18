@@ -1,0 +1,70 @@
+name: Leak gate
+
+# Blocks secrets and protected private terms from entering this repository.
+# The term list is not part of the repository: it comes from the masked secret
+# LEAK_GUARD_DENY (and per-repo exceptions from LEAK_GUARD_ALLOW). Findings report
+# only file, line and category. Without the secret the job fails (fail closed).
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  leak-gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          # Scan the pushed or proposed commit itself, not a synthetic merge commit.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Install gitleaks (pinned, checksum verified)
+        env:
+          GITLEAKS_VERSION: "8.30.1"
+          GITLEAKS_SHA256: "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb"
+        run: |
+          curl -sSfL -o "$RUNNER_TEMP/gitleaks.tar.gz" \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum --check --strict
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
+          "$RUNNER_TEMP/gitleaks" version
+
+      - name: Secrets (gitleaks, full history, built-in rules only)
+        run: |
+          # Repo-local .gitleaks.toml, .gitleaksignore and gitleaks:allow comments are ignored.
+          printf '[extend]\nuseDefault = true\n' > "$RUNNER_TEMP/gitleaks.toml"
+          mkdir -p "$RUNNER_TEMP/no-ignore"
+          "$RUNNER_TEMP/gitleaks" git --log-opts="--all" \
+            --config "$RUNNER_TEMP/gitleaks.toml" \
+            --gitleaks-ignore-path "$RUNNER_TEMP/no-ignore" --ignore-gitleaks-allow \
+            --redact --no-banner --exit-code 1 .
+
+      - name: Protected terms, identities, binaries, image metadata (tree and full history)
+        env:
+          LEAK_GUARD_DENY: ${{ secrets.LEAK_GUARD_DENY }}
+          LEAK_GUARD_ALLOW: ${{ secrets.LEAK_GUARD_ALLOW }}
+        run: |
+          if [ -z "$LEAK_GUARD_DENY" ]; then
+            echo "::error::Secret LEAK_GUARD_DENY is missing, the leak gate cannot run."
+            exit 1
+          fi
+          umask 077
+          printf '%s\n' "$LEAK_GUARD_DENY" > "$RUNNER_TEMP/deny.txt"
+          printf '%s\n' "$LEAK_GUARD_ALLOW" > "$RUNNER_TEMP/allow.txt"
+          guard() {
+            python3 .github/leak-guard/leak_guard.py --no-gitleaks \
+              --deny "$RUNNER_TEMP/deny.txt" --allow "$RUNNER_TEMP/allow.txt" "$@"
+          }
+          status=0
+          guard tree || status=1
+          guard history || status=1
+          rm -f "$RUNNER_TEMP/deny.txt" "$RUNNER_TEMP/allow.txt"
+          exit "$status"
