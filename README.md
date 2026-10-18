@@ -233,8 +233,8 @@ tests/                 # pytest suite; every LLM call is mocked
 
 ## Origin
 
-Company News Radar grew out of a news-monitoring pipeline I built largely in my spare
-time and have been running daily since early 2026. This repository is an independent,
+Company News Radar grew out of a news-monitoring pipeline I built entirely in my spare
+time and brought into production use. This repository is an independent,
 company-neutral re-implementation of its core ideas. It contains no configuration,
 prompts, source lists or data from that deployment.
 
