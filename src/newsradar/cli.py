@@ -10,9 +10,17 @@ from pathlib import Path
 import click
 
 from newsradar import __version__
-from newsradar.config import STAGES, AppConfig, ConfigError, load_config, load_dotenv
-from newsradar.evaluation import format_report, load_dataset, predict, score
-from newsradar.llm.costs import CostTracker
+from newsradar.config import (
+    DEFAULT_PROVIDERS,
+    STAGES,
+    AppConfig,
+    ConfigError,
+    StageModel,
+    load_config,
+    load_dotenv,
+)
+from newsradar.evaluation import evaluate_runs, format_report, load_dataset, mean_f1
+from newsradar.llm.costs import BudgetExceededError, CostTracker
 from newsradar.llm.factory import build_stage_llms
 from newsradar.pipeline import Pipeline, RunOptions
 from newsradar.prompts import PromptLibrary
@@ -119,6 +127,36 @@ def check(config_path: Path, show_prompts: bool) -> None:
             click.echo(f"\n===== {name} (system) =====\n{prompts.system(name)}")
 
 
+def _classification_override(
+    config: AppConfig,
+    model: str | None,
+    temperature: float | None,
+    reasoning_effort: str | None,
+) -> StageModel:
+    """The classification stage with command-line overrides applied."""
+    stage = config.llm.for_stage("classification")
+    update: dict[str, object] = {}
+    if model:
+        provider, sep, name = model.partition("/")
+        if sep and provider in {**DEFAULT_PROVIDERS, **config.llm.providers}:
+            update.update(provider=provider, model=name)
+        else:
+            update.update(model=model)
+        # Settings tuned for the configured model do not carry over to another one.
+        update.update(temperature=None, reasoning_effort=None)
+    if temperature is not None:
+        update["temperature"] = temperature
+    if reasoning_effort is not None:
+        update["reasoning_effort"] = reasoning_effort
+    return stage.model_copy(update=update)
+
+
+def _settings_label(stage: StageModel) -> str:
+    temperature = "provider default" if stage.temperature is None else f"{stage.temperature:g}"
+    effort = stage.reasoning_effort or "provider default"
+    return f"temperature {temperature}, reasoning effort {effort}"
+
+
 @main.command("eval")
 @CONFIG_OPTION
 @click.option(
@@ -129,35 +167,79 @@ def check(config_path: Path, show_prompts: bool) -> None:
     help="Labelled JSON Lines file.",
 )
 @click.option("--offline", is_flag=True, help="Evaluate the keyword baseline instead of the LLM.")
+@click.option(
+    "--model",
+    "model_name",
+    help="Evaluate another classification model: [provider/]model, e.g. openai/gpt-6.1-sol.",
+)
+@click.option(
+    "--reasoning-effort", help="Reasoning effort for the classification model, e.g. none or low."
+)
+@click.option(
+    "--temperature",
+    type=click.FloatRange(0, 2),
+    help="Sampling temperature for the classification model (default: provider default).",
+)
+@click.option(
+    "--repeat",
+    default=1,
+    show_default=True,
+    type=click.IntRange(1, 10),
+    help="Evaluate N times in a row; models without a fixed temperature vary between runs.",
+)
+@click.option(
+    "--budget",
+    type=click.FloatRange(min=0, min_open=True),
+    help="Spending cap in USD for this evaluation (default: llm.daily_budget_usd).",
+)
 @click.option("--threshold", type=click.IntRange(1, 10), help="Override relevance.threshold.")
 @click.option("--out", type=click.Path(dir_okay=False, path_type=Path), help="Write report here.")
-@click.option("--min-f1", type=click.FloatRange(0, 1), help="Exit non-zero if F1 is lower.")
+@click.option("--min-f1", type=click.FloatRange(0, 1), help="Exit non-zero if mean F1 is lower.")
 def evaluate(
     config_path: Path,
     dataset: Path,
     offline: bool,
+    model_name: str | None,
+    reasoning_effort: str | None,
+    temperature: float | None,
+    repeat: int,
+    budget: float | None,
     threshold: int | None,
     out: Path | None,
     min_f1: float | None,
 ) -> None:
     """Measure the relevance gate on a labelled set of headlines."""
     config = _load(config_path)
+    stage = _classification_override(config, model_name, temperature, reasoning_effort)
+    config.llm.classification = stage
     items = load_dataset(dataset)
-    costs = CostTracker(config.llm.pricing, config.llm.daily_budget_usd, run_id="eval")
+    costs = CostTracker(config.llm.pricing, budget or config.llm.daily_budget_usd, run_id="eval")
     try:
         llm = build_stage_llms(config, costs, offline=offline)["classification"]
     except ConfigError as exc:
         raise click.ClickException(str(exc)) from exc
-    predictions = asyncio.run(predict(config, items, llm))
+    try:
+        runs = asyncio.run(evaluate_runs(config, items, llm, costs, repeat))
+    except BudgetExceededError as exc:
+        raise click.ClickException(f"{exc}; raise it with --budget") from exc
     gate = threshold or config.relevance.threshold
-    report = format_report(config, llm.model_id, dataset.as_posix(), items, predictions, gate)
+    report = format_report(
+        config,
+        llm.model_id,
+        dataset.as_posix(),
+        items,
+        runs,
+        gate,
+        settings="" if offline else _settings_label(stage),
+        priced=offline or stage.model in config.llm.pricing,
+    )
     click.echo(report)
     click.echo(f"LLM calls: {costs.run_calls}, cost: ${costs.run_cost_usd:.4f}")
     if out:
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(report, encoding="utf-8")
         click.echo(f"wrote {out}")
-    f1 = score(items, predictions, gate, config.relevance.min_confidence).f1
+    f1 = mean_f1(items, runs, gate, config.relevance.min_confidence)
     if min_f1 is not None and f1 < min_f1:
         raise click.ClickException(f"F1 {f1:.2f} is below the required {min_f1:.2f}")
 

@@ -1,15 +1,19 @@
 from datetime import datetime
+from types import SimpleNamespace
+from typing import Any
 
 import pytest
 
 from newsradar.config import Price
 from newsradar.llm.base import (
     LLMError,
+    LLMRequest,
     StructuredOutputError,
     TransientLLMError,
     parse_structured,
 )
 from newsradar.llm.costs import BudgetExceededError, CostTracker
+from newsradar.llm.openai_compat import OpenAICompatibleClient
 from newsradar.models import ClassificationOutput
 from newsradar.storage.sqlite import SQLiteRepository
 from tests.conftest import ScriptedLLM, structured
@@ -88,3 +92,36 @@ def test_cost_tracker_prices_and_persists() -> None:
     assert again.spent_today_usd == pytest.approx(0.45)
     rows = repo.cost_report(since=datetime(2000, 1, 1))
     assert {r["stage"] for r in rows} == {"summarization", "dedup"}
+
+
+class _FakeCompletions:
+    def __init__(self) -> None:
+        self.params: list[dict[str, Any]] = []
+
+    async def create(self, **params: Any) -> Any:
+        self.params.append(params)
+        message = SimpleNamespace(content='{"ok": true}')
+        usage = SimpleNamespace(prompt_tokens=11, completion_tokens=7)
+        return SimpleNamespace(choices=[SimpleNamespace(message=message)], usage=usage)
+
+
+async def test_openai_client_sends_only_the_settings_that_are_set() -> None:
+    completions = _FakeCompletions()
+    fake = SimpleNamespace(chat=SimpleNamespace(completions=completions))
+    client = OpenAICompatibleClient("openai", "m", None, native_openai=True, client=fake)  # type: ignore[arg-type]
+
+    reply = await client.complete(LLMRequest(stage="classification", system="s", user="u"))
+    assert (reply.text, reply.input_tokens, reply.output_tokens) == ('{"ok": true}', 11, 7)
+    first = completions.params[0]
+    assert "temperature" not in first and "extra_body" not in first
+    assert first["max_completion_tokens"] == 1500
+    assert first["response_format"] == {"type": "json_object"}
+
+    await client.complete(
+        LLMRequest(
+            stage="classification", system="s", user="u", temperature=0.0, reasoning_effort="none"
+        )
+    )
+    second = completions.params[1]
+    assert second["temperature"] == 0.0
+    assert second["extra_body"] == {"reasoning_effort": "none"}

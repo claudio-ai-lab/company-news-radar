@@ -152,8 +152,13 @@ class StageModel(_Strict):
     """Which provider/model a pipeline stage uses."""
 
     provider: str = "openai"
-    model: str = "gpt-4o-mini"
-    temperature: float | None = 0.0
+    model: str = "gpt-6-luna"
+    # None leaves the sampling temperature to the provider. Current OpenAI reasoning
+    # models accept only their default; older chat models can be pinned to 0.
+    temperature: float | None = None
+    # Passed as ``reasoning_effort`` to OpenAI-compatible providers when set. Valid values
+    # depend on the model (gpt-6-luna: none, low, ...; gpt-6.1-sol: low and up).
+    reasoning_effort: str | None = None
     max_output_tokens: int = Field(default=1500, gt=0)
 
 

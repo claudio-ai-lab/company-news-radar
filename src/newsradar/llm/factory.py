@@ -60,6 +60,7 @@ def build_stage_llms(
             costs,
             stage,
             temperature=stage_model.temperature,
+            reasoning_effort=stage_model.reasoning_effort,
             max_output_tokens=stage_model.max_output_tokens,
             semaphore=semaphore,
         )

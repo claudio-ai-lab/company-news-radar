@@ -57,7 +57,8 @@ class LLMRequest:
     stage: str
     system: str
     user: str
-    temperature: float | None = 0.0
+    temperature: float | None = None
+    reasoning_effort: str | None = None
     max_output_tokens: int = 1500
     # The structured inputs the prompt was rendered from. Real providers ignore it;
     # the offline client uses it so demos and CI need no network and no API key.
@@ -107,7 +108,8 @@ class StructuredLLM:
         costs: CostTracker,
         stage: str,
         *,
-        temperature: float | None = 0.0,
+        temperature: float | None = None,
+        reasoning_effort: str | None = None,
         max_output_tokens: int = 1500,
         max_attempts: int = 3,
         repair_rounds: int = 1,
@@ -118,6 +120,7 @@ class StructuredLLM:
         self.costs = costs
         self.stage = stage
         self.temperature = temperature
+        self.reasoning_effort = reasoning_effort
         self.max_output_tokens = max_output_tokens
         self.max_attempts = max_attempts
         self.repair_rounds = repair_rounds
@@ -145,6 +148,7 @@ class StructuredLLM:
                 system=full_system,
                 user=prompt,
                 temperature=self.temperature,
+                reasoning_effort=self.reasoning_effort,
                 max_output_tokens=self.max_output_tokens,
                 payload=payload or {},
             )

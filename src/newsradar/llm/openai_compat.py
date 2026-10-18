@@ -52,6 +52,9 @@ class OpenAICompatibleClient:
         }
         if request.temperature is not None:
             params["temperature"] = request.temperature
+        if request.reasoning_effort is not None:
+            # Sent as a raw body field so older SDK versions pass it through unchanged.
+            params["extra_body"] = {"reasoning_effort": request.reasoning_effort}
         # OpenAI's own API renamed the limit; compatible servers still expect max_tokens.
         limit_key = "max_completion_tokens" if self._native else "max_tokens"
         params[limit_key] = request.max_output_tokens
