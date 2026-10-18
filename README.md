@@ -17,6 +17,13 @@ The code is generic. Everything that describes a particular organisation lives i
 config file that you keep private; this repository ships only two fictional example
 profiles.
 
+<p align="center">
+  <img src="docs/briefing-example.png" width="660"
+       alt="HTML briefing for the fictional Example AG: a short overview, then articles grouped by topic, each with source, time, relevance score, a risk or opportunity marker, a summary and key points">
+</p>
+<p align="center"><sub>The HTML briefing from the offline demo (quickstart step 1): fictional company,
+invented articles, and the keyword stand-in instead of an LLM, so it runs without an API key.</sub></p>
+
 ---
 
 ## Why
@@ -71,7 +78,8 @@ Shared mechanics in [`llm/base.py`](src/newsradar/llm/base.py):
 - **Safe rendering.** Feed and model text is untrusted. HTML is escaped first; only
   `**bold**` and `*italic*` are turned into tags afterwards.
 - **Providers.** OpenAI, DeepSeek, Ollama or any OpenAI-compatible endpoint, and Google
-  Gemini (optional extra). Each stage can use a different provider and model.
+  Gemini (optional extra). Each stage can use a different provider, model, temperature
+  and reasoning effort.
 
 ## Evaluation
 
@@ -80,28 +88,57 @@ headlines for the fictional Example AG profile: 20 relevant, 20 not. Several irr
 items contain topic keywords ("bowling strike", "mobile tariffs", "football club
 bankruptcy"), and several relevant ones contain hardly any. `newsradar eval` runs the real
 screening stage (same prompt, schema and gate, no cache) and reports precision, recall,
-F1, topic accuracy, a threshold sweep and every miss.
+F1, topic accuracy, a threshold sweep, every miss, and the tokens, cost and time of each
+run.
 
-Results from 18 October 2026, relevance threshold 6:
+Results from 18 October 2026, relevance threshold 6. Current OpenAI models only accept
+their default temperature, so their answers vary from run to run; every model was
+evaluated five times and the table shows the mean (F1 with its range).
 
-| Classifier | Precision | Recall | F1 | Topic accuracy | Cost |
-|---|---:|---:|---:|---:|---:|
-| Keyword baseline (offline heuristic, same profile) | 0.88 | 0.70 | 0.78 | 0.93 | $0 |
-| `gpt-4o-mini` | 1.00 | 0.95 | 0.97 | 1.00 | $0.0093 for 40 headlines |
+| Classifier | Precision | Recall | F1 (range) | Topic accuracy | Cost per 1,000 headlines | Time for 40 headlines |
+|---|---:|---:|---:|---:|---:|---:|
+| Keyword baseline (offline heuristic, same profile) | 0.88 | 0.70 | 0.78 | 0.93 | $0 | 0.1 s |
+| **`gpt-6-luna`**, reasoning effort `none` (used in the examples) | 1.00 | 0.98 | 0.99 (0.97–1.00) | 1.00 | $0.16 | 7.5 s |
+| `gpt-6-luna`, reasoning effort `low` | 1.00 | 0.97 | 0.98 (0.95–1.00) | 0.97 | $0.17 | 9.3 s |
+| `gpt-6.1-sol`, reasoning effort `low` | 1.00 | 1.00 | 1.00 (1.00–1.00) | 0.96 | $3.25 | 13.1 s |
+| `gpt-4o-mini`, temperature 0 (previous default) | 1.00 | 0.93 | 0.96 (0.95–0.97) | 1.00 | $0.23 | 4.5 s |
 
-Full reports: [`evals/relevance/results/`](evals/relevance/results/).
+The examples use `gpt-6-luna` without reasoning: it came within one missed headline of
+`gpt-6.1-sol` (F1 0.99 against 1.00) for a twentieth of the cost ($0.16 against $3.25 per
+1,000 headlines), and it beat the previous default `gpt-4o-mini` on recall at lower cost,
+although it took 3 s longer per 40 headlines.
+
+Full reports: [`evals/relevance/results/`](evals/relevance/results/). To compare models
+on your own profile and labelled set:
+
+```bash
+newsradar eval -c config/acme.yaml -d my-set.jsonl --repeat 5
+newsradar eval -c config/acme.yaml -d my-set.jsonl --repeat 5 \
+  --model openai/gpt-6.1-sol --reasoning-effort low --budget 2
+```
 
 What the numbers do and do not say:
 
 - The set is small, synthetic and was written together with the profile. It measures
   whether a model applies *this* profile, not general news judgement.
-- The first prompt version scored a recall of 0.80: the model put indirect signals
+- None of the models raised a false alarm; the differences are all in recall. With `gpt-4o-mini`,
+  the first prompt version scored a recall of 0.80: the model put indirect signals
   (central-bank decisions, robot orders) at 2/10 instead of the middle of the rubric.
   Asking for topic fit and importance as two separate questions fixed that. The prompt
   deliberately contains no examples from the evaluation set.
-- The remaining miss is an ECB rate cut scored 5, which is where the rubric itself puts
-  central-bank decisions. Whether that belongs in the briefing is a threshold choice; the
-  sweep in the report shows the trade-off.
+- The most frequent miss is an ECB rate cut scored 5 (`gpt-6-luna` in two of five runs,
+  `gpt-4o-mini` in all five), which is where the rubric itself puts central-bank
+  decisions. Whether that belongs in the briefing is a threshold choice; the sweep in each
+  report shows the trade-off.
+- More reasoning did not help the small model here: `low` cost slightly more, took longer
+  and scored no better than `none`.
+- Even `gpt-4o-mini` at temperature 0 did not answer identically every time (recall 0.90
+  to 0.95), which is why single runs are not reported.
+- Costs apply list prices to every token; cached-input discounts are ignored, so real
+  costs can be lower. Times are wall-clock with up to eight requests in parallel and
+  depend on provider load.
+- Only OpenAI models were measured. The Gemini and DeepSeek clients are not covered by
+  this evaluation.
 
 CI runs the evaluation with the offline baseline on every push (no API key needed).
 
@@ -127,14 +164,14 @@ newsradar run -c examples/example-ag/config.yaml --limit 40
 # 3. German briefing from German and English sources
 newsradar run -c examples/stadtwerke-musterstadt/config.yaml
 
-# Measure the relevance gate, inspect spending
+# Measure the relevance gate (--model and --repeat compare models), inspect spending
 newsradar eval -c examples/example-ag/config.yaml -d evals/relevance/example-ag.jsonl
 newsradar costs -c examples/example-ag/config.yaml
 ```
 
-In a test run on 18 October 2026 the Example AG profile collected 54 items from six public
-feeds, screened 40, fetched and summarised 3 and produced a digest for **$0.011** with
-`gpt-4o-mini`. Useful flags for `run`: `--offline`, `--limit N`, `--no-scrape`,
+In a test run on 18 October 2026 with `gpt-6-luna` for every stage, the Example AG profile
+collected 56 items from six public feeds, screened 40, fetched and summarised 2 and produced
+a digest for **$0.0075**. Useful flags for `run`: `--offline`, `--limit N`, `--no-scrape`,
 `--skip-collect`, `--redo-digest`, `--no-email`.
 
 ## Make it yours
@@ -152,7 +189,7 @@ topics:           # id, label, description, keywords (hints), icon
 relevance:        # threshold, rubric (score bands with meanings), guidance (extra rules)
 impact:           # whose perspective "risk" / "opportunity" refers to, labels
 sources:          # rss | sitemap, url or local path, language, priority, max_age_hours
-llm:              # provider/model per stage, pricing, daily_budget_usd
+llm:              # provider, model, reasoning effort per stage; pricing, daily_budget_usd
 pipeline:         # scraping, dedup thresholds, summary and digest limits
 storage:          # sqlite:///data/acme.db
 output:           # language, locale, timezone, formats, optional SMTP e-mail

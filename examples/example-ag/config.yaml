@@ -155,18 +155,19 @@ sources:
     priority: 3
 
 llm:
-  # Any stage can use a different provider/model, e.g. a cheap model for screening
-  # and a stronger one for summaries:
-  #   summarization: {provider: gemini, model: gemini-2.5-flash}
+  # gpt-6-luna without reasoning had the best quality per dollar in the relevance
+  # evaluation (evals/relevance/results/). Any stage can use a different provider/model,
+  # e.g. a stronger one for summaries:
+  #   summarization: {provider: openai, model: gpt-6.1-sol, reasoning_effort: low}
+  # Current OpenAI models accept only their default temperature, so none is set here.
   default:
     provider: openai
-    model: gpt-4o-mini
-  digest:
-    provider: openai
-    model: gpt-4o-mini
-    temperature: 0.2
-  # USD per million tokens. Check your provider's current price list.
+    model: gpt-6-luna
+    reasoning_effort: none
+  # USD per million tokens (OpenAI list prices, October 2026). Check the current price list.
   pricing:
+    gpt-6-luna: {input_per_mtok: 0.10, output_per_mtok: 0.50}
+    gpt-6.1-sol: {input_per_mtok: 2.00, output_per_mtok: 10.00}
     gpt-4o-mini: {input_per_mtok: 0.15, output_per_mtok: 0.60}
   daily_budget_usd: 0.50
   max_concurrency: 8

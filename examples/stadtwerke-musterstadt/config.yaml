@@ -132,9 +132,10 @@ sources:
 llm:
   default:
     provider: openai
-    model: gpt-4o-mini
+    model: gpt-6-luna
+    reasoning_effort: none
   pricing:
-    gpt-4o-mini: {input_per_mtok: 0.15, output_per_mtok: 0.60}
+    gpt-6-luna: {input_per_mtok: 0.10, output_per_mtok: 0.50}
   daily_budget_usd: 0.50
 
 pipeline:
