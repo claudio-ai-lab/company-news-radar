@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="{{ digest.language }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ digest.title }} · {{ digest.digest_date | date("medium") }}</title>
+<style>
+  :root { --ink: #1f2933; --muted: #616e7c; --line: #d9dee3; --accent: #2f5d8a;
+          --neg: #b42318; --pos: #1e7f4f; --bg: #ffffff; }
+  @media (prefers-color-scheme: dark) {
+    :root { --ink: #e4e7eb; --muted: #9aa5b1; --line: #3e4c59; --accent: #7fb2e5;
+            --neg: #f97066; --pos: #6ce9a6; --bg: #14191f; }
+  }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 15px/1.55 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 24px 16px 48px; }
+  header { border-bottom: 3px solid var(--accent); padding-bottom: 12px; margin-bottom: 20px; }
+  h1 { font-size: 22px; margin: 0; }
+  .meta { color: var(--muted); font-size: 13px; }
+  h2 { font-size: 17px; margin: 28px 0 8px; border-bottom: 1px solid var(--line); padding-bottom: 4px; }
+  .summary-box li { margin-bottom: 6px; }
+  article { padding: 12px 0 12px 12px; border-left: 4px solid var(--line); margin: 10px 0; }
+  article.negative { border-left-color: var(--neg); }
+  article.positive { border-left-color: var(--pos); }
+  article h3 { font-size: 16px; margin: 0 0 4px; }
+  article h3 a { color: var(--accent); text-decoration: none; }
+  .badge { font-size: 12px; font-weight: 600; margin-left: 6px; }
+  .badge.negative { color: var(--neg); } .badge.positive { color: var(--pos); }
+  .points { margin: 6px 0 0; padding-left: 18px; }
+  .coverage, .note { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .coverage a { color: var(--muted); }
+  footer { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 10px;
+           color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>{{ digest.title }}</h1>
+  <div class="meta">{{ digest.digest_date | date }} · {{ digest.article_count | number }} {{ t.articles_one if digest.article_count == 1 else t.articles_many }}</div>
+</header>
+
+{% if digest.executive_summary %}
+<section class="summary-box">
+  <h2>{{ t.in_brief }}</h2>
+  <ul>
+  {% for sentence in digest.executive_summary %}
+    <li>{{ sentence }}</li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+{% for group in digest.groups %}
+<section>
+  <h2>{{ group.icon }} {{ group.label }}</h2>
+  {% for item in group.items %}
+  <article class="{{ item.impact }}">
+    <h3><a href="{{ item.url }}">{{ item.title | plain }}</a>
+      {% if item.impact == "negative" %}<span class="badge negative">▼ {{ digest.negative_label }}</span>{% endif %}
+      {% if item.impact == "positive" %}<span class="badge positive">▲ {{ digest.positive_label }}</span>{% endif %}
+    </h3>
+    <div class="meta">{{ item.source }}{% if item.published_at %} · {{ item.published_at | datetime }}{% endif %} · {{ t.relevance }} {{ item.relevance }}/10</div>
+    <div>{{ item.summary | inline_md }}</div>
+    {% if item.key_points %}
+    <ul class="points">
+      {% for point in item.key_points %}<li>{{ point | inline_md }}</li>{% endfor %}
+    </ul>
+    {% endif %}
+    {% if item.also_covered_by %}
+    <div class="coverage">{{ t.also_reported_by }}:
+      {% for link in item.also_covered_by %}<a href="{{ link.url }}">{{ link.source }}</a>{{ ", " if not loop.last }}{% endfor %}
+    </div>
+    {% endif %}
+    {% if item.based_on_feed_text %}<div class="note">{{ t.feed_text_note }}</div>{% endif %}
+  </article>
+  {% endfor %}
+</section>
+{% endfor %}
+
+<footer>
+  {% if digest.analysis_fallback %}<p>{{ t.fallback_note }}</p>{% endif %}
+  {% if digest.stats %}
+  <p>
+  {% for key, value in digest.stats.items() %}{{ t.get(key, key) }}: {{ value | number }}{{ " · " if not loop.last }}{% endfor %}
+  </p>
+  {% endif %}
+  {% set failed = digest.sources | rejectattr("ok") | list %}
+  {% if failed %}<p>{{ t.sources_unavailable }}: {{ failed | map(attribute="name") | join(", ") }}</p>{% endif %}
+  <p>{{ t.generated_by.format(when=(digest.generated_at | datetime)) }}</p>
+</footer>
+</main>
+</body>
+</html>

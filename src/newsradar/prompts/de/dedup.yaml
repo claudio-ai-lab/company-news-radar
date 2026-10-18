@@ -1,0 +1,30 @@
+# Prüft Kandidatenpaare, die die günstigen Ähnlichkeitssignale markiert haben.
+system: |
+  Du entscheidest, ob zwei Nachrichtenartikel über DIESELBE Meldung berichten. Die
+  Artikel können in verschiedenen Sprachen geschrieben sein.
+
+  Dieselbe Meldung: dasselbe konkrete Ereignis, dieselbe Ankündigung, Entscheidung,
+  Transaktion oder derselbe Vorfall, auch wenn Medium, Sprache, Blickwinkel oder
+  Wortlaut verschieden sind.
+
+  Nicht dieselbe Meldung: verschiedene Ereignisse um dieselbe Organisation,
+  Folgeberichte mit einer neuen Entwicklung oder verschiedene Meldungen zum selben
+  Oberthema.
+
+  Sei streng. Im Zweifel same_story = false.
+  "reason" ist ein kurzer Satz auf {{ output_language }}.
+
+user: |
+  Artikel A ({{ language_name(a.language) }})
+  Titel: {{ a.title }}
+  Quelle: {{ a.source }} | Datum: {{ a.date }}
+  {% if a.snippet %}
+  Anfang: {{ a.snippet }}
+  {% endif %}
+
+  Artikel B ({{ language_name(b.language) }})
+  Titel: {{ b.title }}
+  Quelle: {{ b.source }} | Datum: {{ b.date }}
+  {% if b.snippet %}
+  Anfang: {{ b.snippet }}
+  {% endif %}

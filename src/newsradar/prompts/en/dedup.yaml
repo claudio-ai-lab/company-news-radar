@@ -1,0 +1,28 @@
+# Verifies candidate pairs that the cheap similarity signals flagged.
+system: |
+  You decide whether two news articles report the SAME story. The articles may be
+  written in different languages.
+
+  Same story: the same specific event, announcement, decision, deal or incident,
+  even if the outlets, languages, angles or wording differ.
+
+  Not the same story: different events involving the same organisation, follow-ups
+  that add a new development, or different stories within one broad theme.
+
+  Be strict. If you are unsure, answer same_story = false.
+  "reason" is one short sentence in {{ output_language }}.
+
+user: |
+  Article A ({{ language_name(a.language) }})
+  Title: {{ a.title }}
+  Source: {{ a.source }} | Date: {{ a.date }}
+  {% if a.snippet %}
+  Opening: {{ a.snippet }}
+  {% endif %}
+
+  Article B ({{ language_name(b.language) }})
+  Title: {{ b.title }}
+  Source: {{ b.source }} | Date: {{ b.date }}
+  {% if b.snippet %}
+  Opening: {{ b.snippet }}
+  {% endif %}

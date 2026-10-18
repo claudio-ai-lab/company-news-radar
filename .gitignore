@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Your own company configuration stays private.
+# Only config/README.md is versioned; put profiles and prompt overrides here.
+config/*
+!config/README.md
+
+# Runtime data: databases, caches, generated digests
+data/
+out/
+*.db
+*.db-journal
+*.sqlite

@@ -1,0 +1,32 @@
+# Offline variant of the example profile: no network, no API key.
+#
+# Reads two local fixture feeds with invented articles and answers every LLM stage with
+# the deterministic keyword heuristic (provider "fake"). Used by the quickstart and CI.
+#
+#   newsradar run -c examples/example-ag/offline.yaml
+
+extends: config.yaml
+
+sources:
+  - name: Example Wire
+    path: fixtures/example-wire.xml
+    priority: 2
+    max_age_hours: null
+  - name: Industry Ledger
+    path: fixtures/industry-ledger.xml
+    priority: 3
+    max_age_hours: null
+
+llm:
+  default: {provider: fake, model: keyword-heuristic}
+  digest: {provider: fake, model: keyword-heuristic}
+
+pipeline:
+  scrape:
+    enabled: false
+
+storage:
+  url: sqlite:///out/example-ag-offline/radar.db
+
+output:
+  dir: out/example-ag-offline

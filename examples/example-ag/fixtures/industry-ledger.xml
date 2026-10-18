@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invented articles for the offline demo. All companies and events are fictional. -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Industry Ledger (fictional)</title>
+  <link>https://example.org/ledger</link>
+  <description>Fictional trade publication used for the offline demo</description>
+
+  <item>
+    <title>Nordwerk Castings confirms closure of Saxony foundry</title>
+    <link>https://example.org/ledger/2026/10/nordwerk-castings-closure-saxony-foundry</link>
+    <pubDate>Fri, 16 Oct 2026 09:40:00 GMT</pubDate>
+    <description>The plant closure means 240 job cuts; production moves to Poland.</description>
+    <content:encoded><![CDATA[<p>Nordwerk Castings has confirmed the closure of its Saxony foundry. Around 240 jobs will be lost, and aluminium casting production will move to Poland by spring. Works council representatives said they would negotiate a social plan.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Precimont Parts Group acquires Swedish machining specialist</title>
+    <link>https://example.org/ledger/2026/10/precimont-acquires-swedish-machining-specialist</link>
+    <pubDate>Fri, 16 Oct 2026 10:25:00 GMT</pubDate>
+    <description>The acquisition adds five-axis machining capacity for medical and aerospace parts.</description>
+    <content:encoded><![CDATA[<p>Precimont Parts Group has agreed to buy a Swedish contract manufacturer with 180 employees. The deal adds five-axis machining capacity for medical and aerospace components. The purchase price was not disclosed; closing is expected in the first quarter of 2027, subject to approval by competition authorities.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Kestrima Automation cuts annual outlook as robotics orders slow</title>
+    <link>https://example.org/ledger/2026/10/kestrima-cuts-outlook-orders-slow</link>
+    <pubDate>Fri, 16 Oct 2026 11:45:00 GMT</pubDate>
+    <description>Third-quarter orders for automation systems fell 12%; capital spending at customers remains weak.</description>
+    <content:encoded><![CDATA[<p>Kestrima Automation lowered its full-year revenue forecast to a range of 1.1 to 1.2 billion euros, from 1.3 billion previously. Third-quarter order intake for its robotics and automation systems fell 12% year on year. The company said automotive customers were postponing capital spending, while demand from medical-device makers held up.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Why balcony vegetable gardens are booming this autumn</title>
+    <link>https://example.org/ledger/2026/10/balcony-vegetable-gardens</link>
+    <pubDate>Fri, 16 Oct 2026 12:30:00 GMT</pubDate>
+    <description>Garden centres report strong sales of winter lettuce and herb kits.</description>
+    <content:encoded><![CDATA[<p>Garden centres report that sales of winter lettuce seedlings doubled compared with last year. Experts recommend frost-resistant varieties.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>ECB holds interest rates steady, signals patience on inflation</title>
+    <link>https://example.org/ledger/2026/10/ecb-holds-interest-rates</link>
+    <pubDate>Fri, 16 Oct 2026 13:50:00 GMT</pubDate>
+    <description>The ECB rate decision left the deposit rate unchanged; the euro exchange rate barely moved.</description>
+    <content:encoded><![CDATA[<p>The European Central Bank kept its deposit rate unchanged at 2.0% on Thursday. The bank said inflation was close to its target but that energy prices remained a risk. The euro was little changed against the dollar after the decision.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Museum unveils restored medieval tapestry</title>
+    <link>https://example.org/ledger/2026/10/museum-restored-tapestry</link>
+    <pubDate>Fri, 16 Oct 2026 15:00:00 GMT</pubDate>
+    <description>The restoration took four years.</description>
+    <content:encoded><![CDATA[<p>The tapestry will be on display from November. Conservators used more than 30 kilometres of thread.</p>]]></content:encoded>
+  </item>
+</channel>
+</rss>

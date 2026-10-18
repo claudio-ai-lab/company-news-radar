@@ -1,0 +1,202 @@
+# Company News Radar: example profile
+#
+# Example AG is a FICTIONAL company. Every organisation on the watchlist below is
+# invented as well. Copy this file to config/<your-company>.yaml (git-ignored) and
+# replace the profile, topics, rubric and sources with your own.
+
+profile:
+  company: Example AG
+  description: >
+    Mid-sized manufacturer of precision-machined aluminium and stainless-steel
+    components for medical-device and industrial-automation customers. Two plants
+    in Central Europe; key suppliers of castings, bar stock and surface treatment
+    in Germany, Italy and Eastern Europe; about a third of sales go to the US.
+  audience: the purchasing, sales and management team
+  focus: >
+    Early warning about anything that could change supply security, input costs,
+    customer demand or market access within the next weeks: supplier or customer
+    distress, raw-material and energy prices, logistics disruptions, tariffs and
+    product regulation, and moves by competitors.
+  regions: [Europe, United States]
+  watchlist:
+    - name: Nordwerk Castings
+      aliases: [Nordwerk]
+      relation: key supplier of aluminium castings
+    - name: Brentalux Steel Service
+      aliases: [Brentalux]
+      relation: stainless-steel bar stock distributor
+    - name: Halvora Medical Systems
+      aliases: [Halvora]
+      relation: largest customer (surgical robotics)
+    - name: Kestrima Automation
+      aliases: [Kestrima]
+      relation: customer (factory automation)
+    - name: Precimont Parts Group
+      aliases: [Precimont]
+      relation: main competitor
+
+topics:
+  - id: supplier_customer_health
+    label: Suppliers & customers
+    icon: "⚠"
+    description: >
+      Insolvency, restructuring, plant closures, layoffs, profit warnings or major
+      quality problems at manufacturers in metalworking, automotive, medical devices
+      or automation that could be suppliers or customers.
+    keywords: [insolvency, bankruptcy, chapter 11, restructuring, plant closure,
+               layoffs, job cuts, profit warning, recall, administration]
+  - id: supply_chain
+    label: Supply chain & logistics
+    icon: "⛟"
+    description: >
+      Port, rail or trucking disruptions, strikes, shipping rates, component or
+      material shortages and factory outages that delay deliveries in Europe or
+      transatlantic trade.
+    keywords: [shortage, strike, port, shipping, freight, container, disruption,
+               logistics, bottleneck, supply chain, force majeure]
+  - id: input_costs
+    label: Materials & energy
+    icon: "⚙"
+    description: >
+      Prices and availability of aluminium, steel, nickel and other metals, and of
+      industrial electricity and gas; surcharges and capacity cuts at mills.
+    keywords: [aluminium, aluminum, steel, nickel, stainless, metal prices,
+               energy prices, electricity, natural gas, smelter, surcharge]
+  - id: trade_regulation
+    label: Trade & regulation
+    icon: "§"
+    description: >
+      Tariffs, export controls, sanctions, customs rules, carbon border adjustment
+      and product regulation (for example medical-device rules) that affect
+      industrial components or their customers.
+    keywords: [tariff, tariffs, export controls, sanctions, customs, CBAM,
+               anti-dumping, trade deal, medical device regulation, MDR]
+  - id: demand
+    label: Customer markets
+    icon: "▲"
+    description: >
+      Demand signals from medical technology, robotics, factory automation and
+      industrial machinery: order intake, capital spending, production indices
+      and purchasing-manager surveys.
+    keywords: [PMI, orders, industrial production, factory output, robotics,
+               automation, medical device, capital spending, capex]
+  - id: competitors
+    label: Competitors & deals
+    icon: "◆"
+    description: >
+      Acquisitions, mergers, new plants, capacity expansions and pricing moves by
+      contract manufacturers and precision-machining companies.
+    keywords: [acquisition, acquires, merger, new plant, expansion, capacity,
+               contract manufacturer, machining]
+  - id: rates_currency
+    label: Rates & currency
+    icon: "€"
+    description: >
+      Central-bank decisions and inflation or exchange-rate moves (EUR, USD) that
+      change financing costs or export margins of a European exporter.
+    keywords: [interest rate, interest rates, ECB, Federal Reserve, rate decision,
+               inflation, exchange rate, euro, dollar]
+
+relevance:
+  threshold: 6
+  rubric:
+    - score: "9-10"
+      meaning: >
+        Direct, near-term effect on Example AG: a watchlist company in distress or
+        making a major move, a new tariff or export rule on precision metal parts,
+        an acute disruption on its supply routes.
+    - score: "7-8"
+      meaning: >
+        Concrete event with numbers at a named company or market in Example AG's
+        supply chain or customer industries (a European foundry closes a plant,
+        aluminium jumps several percent, an automation maker cuts its outlook).
+    - score: "5-6"
+      meaning: >
+        Relevant sector or macro signal with an indirect effect (euro-area
+        manufacturing PMI, ECB or Fed decision, freight-rate trend).
+    - score: "3-4"
+      meaning: Business news from neighbouring industries with only a remote link.
+    - score: "1-2"
+      meaning: >
+        Unrelated: politics without a trade angle, sport, culture, consumer
+        lifestyle, personal finance, celebrity news.
+  guidance:
+    - Consumer retail, banking and real-estate stories are irrelevant unless they name a watchlist company.
+
+impact:
+  perspective: Example AG's supply security, costs and sales
+  negative_label: Risk
+  positive_label: Opportunity
+
+# Each source declares the language it is written in; the briefing language is set
+# separately under output.language.
+sources:
+  - name: Manufacturing Dive
+    url: https://www.manufacturingdive.com/feeds/news/
+    priority: 2
+    max_age_hours: 72  # covers weekends
+  - name: Supply Chain Dive
+    url: https://www.supplychaindive.com/feeds/news/
+    priority: 2
+    max_age_hours: 72
+  - name: ECB press releases
+    url: https://www.ecb.europa.eu/rss/press.html
+    priority: 1
+    max_age_hours: 168
+  - name: Federal Reserve press releases
+    url: https://www.federalreserve.gov/feeds/press_all.xml
+    priority: 1
+    max_age_hours: 168
+  - name: BBC Business
+    url: https://feeds.bbci.co.uk/news/business/rss.xml
+    priority: 3
+  - name: Guardian Business
+    url: https://www.theguardian.com/uk/business/rss
+    priority: 3
+
+llm:
+  # Any stage can use a different provider/model, e.g. a cheap model for screening
+  # and a stronger one for summaries:
+  #   summarization: {provider: gemini, model: gemini-2.5-flash}
+  default:
+    provider: openai
+    model: gpt-4o-mini
+  digest:
+    provider: openai
+    model: gpt-4o-mini
+    temperature: 0.2
+  # USD per million tokens. Check your provider's current price list.
+  pricing:
+    gpt-4o-mini: {input_per_mtok: 0.15, output_per_mtok: 0.60}
+  daily_budget_usd: 0.50
+  max_concurrency: 8
+
+pipeline:
+  max_classifications_per_run: 300
+  scrape:
+    enabled: true
+    respect_robots_txt: true
+    delay_s: 1.0
+  dedup:
+    enabled: true
+    window_hours: 48
+  summary:
+    max_key_points: 3
+  digest:
+    title: "{company} · Daily Radar"
+    max_articles: 30
+    max_groups: 6
+
+storage:
+  url: sqlite:///data/example-ag.db
+
+output:
+  language: en        # briefing language: prompt set, texts in the digest
+  locale: en_GB       # date and number formats
+  timezone: Europe/Vienna
+  dir: out/example-ag
+  formats: [html, markdown, json]
+  email:
+    enabled: false
+    sender: radar@example.com
+    to: [team@example.com]

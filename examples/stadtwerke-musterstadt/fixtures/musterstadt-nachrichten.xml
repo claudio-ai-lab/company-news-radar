@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Erfundene Meldungen für die Offline-Demo. Alle Firmen und Ereignisse sind fiktiv. -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Musterstadt-Nachrichten (fiktiv)</title>
+  <link>https://example.net/nachrichten</link>
+  <description>Fiktiver Nachrichtenfeed für die Offline-Demo</description>
+
+  <item>
+    <title>Bundesnetzagentur legt Netzentgelte für 2027 fest</title>
+    <link>https://example.net/nachrichten/netzentgelte-2027</link>
+    <pubDate>Fri, 16 Oct 2026 08:00:00 GMT</pubDate>
+    <description>Die Festlegung der Bundesnetzagentur senkt die Netzentgelte für Haushalte im Schnitt um 4 Prozent.</description>
+    <content:encoded><![CDATA[<p>Die Bundesnetzagentur hat die Festlegung zu den Netzentgelten für 2027 veröffentlicht. Für Haushaltskunden sinken die Entgelte im Bundesschnitt um 4 Prozent. Verteilnetzbetreiber müssen ihre Preisblätter bis zum 15. Dezember anpassen. Für Regionen mit hohem Ausbaubedarf gilt ein neuer Ausgleichsmechanismus.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Börsenstrompreis steigt nach Kraftwerksausfällen um 18 Prozent</title>
+    <link>https://example.net/nachrichten/boersenstrompreis-steigt</link>
+    <pubDate>Fri, 16 Oct 2026 09:30:00 GMT</pubDate>
+    <description>Am Terminmarkt zog der Strompreis für das erste Quartal deutlich an; auch der Gaspreis legte zu.</description>
+    <content:encoded><![CDATA[<p>Der Börsenstrompreis für Lieferungen im ersten Quartal 2027 ist innerhalb einer Woche um 18 Prozent gestiegen. Händler verweisen auf ungeplante Ausfälle mehrerer Kraftwerke und eine schwache Windprognose. Auch der Gaspreis am Großhandelsmarkt legte um 7 Prozent zu.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Voltaro Energie übernimmt regionalen Stromanbieter</title>
+    <link>https://example.net/nachrichten/voltaro-uebernahme</link>
+    <pubDate>Fri, 16 Oct 2026 10:15:00 GMT</pubDate>
+    <description>Mit der Übernahme gewinnt der Energieversorger rund 45.000 Kundinnen und Kunden.</description>
+    <content:encoded><![CDATA[<p>Voltaro Energie übernimmt einen regionalen Stromanbieter mit rund 45.000 Kundinnen und Kunden. Der Kaufpreis wurde nicht genannt. Voltaro kündigte an, die Tarife der übernommenen Kunden bis Ende 2027 nicht zu erhöhen.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Kommunale Wärmeplanung: Frist für Mittelstädte rückt näher</title>
+    <link>https://example.net/nachrichten/waermeplanung-frist</link>
+    <pubDate>Fri, 16 Oct 2026 11:00:00 GMT</pubDate>
+    <description>Bis Mitte 2028 müssen Kommunen ihre Wärmeplanung vorlegen; Fernwärme spielt dabei eine zentrale Rolle.</description>
+    <content:encoded><![CDATA[<p>Kommunen mit weniger als 100.000 Einwohnern müssen ihre Wärmeplanung bis Mitte 2028 vorlegen. Eine Umfrage unter 120 Städten zeigt, dass erst ein Drittel mit der Planung begonnen hat. Fernwärme und Wärmepumpen gelten in den meisten Entwürfen als wichtigste Optionen.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Heimsieg im Derby: Musterstadt jubelt</title>
+    <link>https://example.net/nachrichten/derby-heimsieg</link>
+    <pubDate>Fri, 16 Oct 2026 12:00:00 GMT</pubDate>
+    <description>Vor ausverkauftem Haus gewann die Mannschaft mit 2:1.</description>
+    <content:encoded><![CDATA[<p>Das Siegtor fiel in der Nachspielzeit. Die Mannschaft rückt damit auf Platz drei vor.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Neues Café in der Altstadt eröffnet</title>
+    <link>https://example.net/nachrichten/cafe-altstadt</link>
+    <pubDate>Fri, 16 Oct 2026 13:00:00 GMT</pubDate>
+    <description>Die Betreiber setzen auf regionale Backwaren.</description>
+    <content:encoded><![CDATA[<p>Das Café bietet 40 Plätze und ist täglich ab sieben Uhr geöffnet.</p>]]></content:encoded>
+  </item>
+</channel>
+</rss>

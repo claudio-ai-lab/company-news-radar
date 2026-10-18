@@ -1,0 +1,79 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "company-news-radar"
+version = "0.1.0"
+description = "Configurable LLM pipeline that turns public news feeds into a daily, company-specific briefing."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Claudio Lutz" }]
+keywords = ["llm", "news", "monitoring", "rss", "summarization", "structured-output"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pydantic>=2.6",
+    "PyYAML>=6.0",
+    "jinja2>=3.1",
+    "markupsafe>=2.1",
+    "click>=8.1",
+    "httpx>=0.27",
+    "feedparser>=6.0.11",
+    "trafilatura>=1.12",
+    "openai>=1.40",
+    "Babel>=2.12",
+    "tzdata; sys_platform == 'win32'",
+]
+
+[project.optional-dependencies]
+gemini = ["google-genai>=1.0"]
+embeddings = ["sentence-transformers>=2.7", "numpy>=1.26"]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.6",
+    "mypy>=1.10",
+    "types-PyYAML",
+]
+
+[project.scripts]
+newsradar = "newsradar.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/newsradar"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "W", "F", "I", "N", "UP", "B", "C4", "SIM", "RUF"]
+# Line length is enforced by `ruff format`; long string literals are left alone.
+ignore = ["E501", "RUF001", "RUF002", "RUF003"]
+
+[tool.mypy]
+python_version = "3.11"
+files = ["src"]
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+strict_optional = true
+
+[[tool.mypy.overrides]]
+module = ["feedparser", "trafilatura", "trafilatura.*", "google", "google.*", "sentence_transformers", "numpy", "babel", "babel.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q"

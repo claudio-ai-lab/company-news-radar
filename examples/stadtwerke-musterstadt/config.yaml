@@ -1,0 +1,156 @@
+# Company News Radar: deutschsprachiges Beispielprofil
+#
+# Die Stadtwerke Musterstadt GmbH sind ERFUNDEN, ebenso alle Organisationen auf der
+# Beobachtungsliste. Das Profil zeigt, dass Quellsprache und Ausgabesprache getrennt
+# sind: deutsche und englische Feeds, Briefing auf Deutsch, Formate nach de_DE.
+
+profile:
+  company: Stadtwerke Musterstadt GmbH
+  description: >
+    Kommunaler Energieversorger einer Mittelstadt mit rund 60.000 Kundinnen und
+    Kunden für Strom, Gas und Fernwärme. Betreibt das örtliche Verteilnetz, ein
+    Heizkraftwerk und eigene Solarparks; beschafft Strom und Gas am Großhandelsmarkt
+    über einen Handelspartner.
+  audience: die Geschäftsführung sowie die Teams Beschaffung, Netz und Vertrieb
+  focus: >
+    Frühe Hinweise auf alles, was in den nächsten Wochen Beschaffungskosten,
+    Netzentgelte, Versorgungssicherheit, die Wärmeplanung oder das Kundengeschäft
+    verändert.
+  regions: [Deutschland, Europäische Union]
+  watchlist:
+    - name: Nordwind Energiehandel
+      relation: Handelspartner für Strom- und Gasbeschaffung
+    - name: Talnetz AG
+      aliases: [Talnetz]
+      relation: vorgelagerter Netzbetreiber
+    - name: Voltaro Energie
+      aliases: [Voltaro]
+      relation: Wettbewerber im Privatkundengeschäft
+    - name: Heizwerk Ostend
+      relation: Partner für die Fernwärmeerzeugung
+
+topics:
+  - id: energy_prices
+    label: Energiepreise & Beschaffung
+    icon: "€"
+    description: >
+      Großhandelspreise für Strom und Gas, Terminmarkt, CO2-Preis und alles, was
+      die Beschaffungskosten eines Versorgers kurzfristig verändert.
+    keywords: [Strompreis, Gaspreis, Großhandel, Börsenstrompreis, CO2-Preis,
+               Emissionshandel, Terminmarkt, LNG, electricity prices, gas prices]
+  - id: regulation
+    label: Regulierung & Netzentgelte
+    icon: "§"
+    description: >
+      Entscheidungen der Bundesnetzagentur, Netzentgelte, Energiewirtschaftsrecht,
+      Messstellenbetrieb und Vorgaben, die Netzbetreiber und Versorger umsetzen müssen.
+    keywords: [Bundesnetzagentur, Netzentgelte, Energiewirtschaftsgesetz, EnWG,
+               Festlegung, Anreizregulierung, Smart Meter, grid fees, regulator]
+  - id: grids_security
+    label: Netze & Versorgungssicherheit
+    icon: "⚡"
+    description: >
+      Netzausbau, Engpässe, Störungen, Gasspeicher und Maßnahmen zur
+      Versorgungssicherheit in Deutschland und den Nachbarländern.
+    keywords: [Netzausbau, Stromnetz, Gasspeicher, Versorgungssicherheit,
+               Stromausfall, Redispatch, Übertragungsnetz, grid, gas storage]
+  - id: heat_transition
+    label: Wärmewende
+    icon: "♨"
+    description: >
+      Kommunale Wärmeplanung, Gebäudeenergiegesetz, Fernwärme, Wärmepumpen und
+      Förderprogramme für die Wärmeversorgung.
+    keywords: [Wärmeplanung, Fernwärme, Wärmepumpe, Gebäudeenergiegesetz,
+               Heizungsgesetz, Wärmenetz, district heating, heat pump]
+  - id: renewables
+    label: Erneuerbare & Projekte
+    icon: "☀"
+    description: >
+      Ausschreibungen, Förderung und Kosten von Solar, Wind, Batteriespeichern und
+      Wasserstoff, soweit sie Projekte eines Stadtwerks betreffen.
+    keywords: [Photovoltaik, Solarpark, Windkraft, Ausschreibung, EEG,
+               Batteriespeicher, Wasserstoff, solar, wind power]
+  - id: competition
+    label: Wettbewerb & Kunden
+    icon: "◆"
+    description: >
+      Energieanbieter, Tarife, Kundenwechsel, Grundversorgung, Übernahmen und
+      Kooperationen von Stadtwerken und Wettbewerbern.
+    keywords: [Energieversorger, Stromanbieter, Tarif, Kundenwechsel,
+               Grundversorgung, Übernahme, Fusion, Stadtwerke]
+
+relevance:
+  threshold: 6
+  rubric:
+    - score: "9-10"
+      meaning: >
+        Unmittelbare Wirkung auf die Stadtwerke Musterstadt: Meldung zu einer
+        Organisation der Beobachtungsliste, neue Netzentgelt- oder Preisregeln mit
+        Stichtag, akute Störung der Versorgung in der Region.
+    - score: "7-8"
+      meaning: >
+        Konkretes Ereignis mit Zahlen in den Märkten des Stadtwerks (deutlicher
+        Sprung der Großhandelspreise, Festlegung der Bundesnetzagentur, Übernahme
+        eines Versorgers).
+    - score: "5-6"
+      meaning: >
+        Relevantes Branchen- oder Politiksignal mit indirekter Wirkung
+        (Gesetzentwurf, Studie zur Wärmewende, Füllstand der Gasspeicher).
+    - score: "3-4"
+      meaning: Energiethemen ohne Bezug zu Versorgern, etwa Konsumtipps.
+    - score: "1-2"
+      meaning: Ohne Bezug, zum Beispiel Sport, Kultur, Lokales ohne Energiebezug.
+  guidance:
+    - Entscheidungen der Bundesnetzagentur zu Post, Telekommunikation oder Eisenbahn sind nicht relevant.
+
+impact:
+  perspective: Kosten, Netzbetrieb und Kundengeschäft der Stadtwerke Musterstadt
+
+# Jede Quelle gibt ihre eigene Sprache an. Das Briefing ist trotzdem auf Deutsch.
+sources:
+  - name: tagesschau Wirtschaft
+    url: https://www.tagesschau.de/wirtschaft/index~rss2.xml
+    language: de
+    priority: 3
+    max_age_hours: 72
+  - name: tagesschau Energie
+    url: https://www.tagesschau.de/wirtschaft/energie/index~rss2.xml
+    language: de
+    priority: 2
+    max_age_hours: 72
+  - name: Bundesnetzagentur Pressemitteilungen
+    url: https://www.bundesnetzagentur.de/SiteGlobals/Functions/RSSFeed/DE/RSSNewsfeed/RSSNewsfeed_Pressemitteilungen.xml
+    language: de
+    priority: 1
+    max_age_hours: 168
+  - name: Carbon Brief
+    url: https://www.carbonbrief.org/feed/
+    language: en
+    priority: 2
+    max_age_hours: 72
+
+llm:
+  default:
+    provider: openai
+    model: gpt-4o-mini
+  pricing:
+    gpt-4o-mini: {input_per_mtok: 0.15, output_per_mtok: 0.60}
+  daily_budget_usd: 0.50
+
+pipeline:
+  summary:
+    max_key_points: 3
+  digest:
+    title: "{company} · Energie-Radar"
+    max_articles: 25
+    max_groups: 6
+
+storage:
+  url: sqlite:///data/stadtwerke-musterstadt.db
+
+output:
+  language: de
+  locale: de_DE
+  timezone: Europe/Berlin
+  dir: out/stadtwerke-musterstadt
+  formats: [html, markdown, json]

@@ -1,0 +1,37 @@
+# {{ digest.title }}
+
+_{{ digest.digest_date | date }} · {{ digest.article_count | number }} {{ t.articles_one if digest.article_count == 1 else t.articles_many }}_
+{% if digest.executive_summary %}
+
+## {{ t.in_brief }}
+
+{% for sentence in digest.executive_summary %}
+- {{ sentence }}
+{% endfor %}
+{% endif %}
+{% for group in digest.groups %}
+
+## {{ group.icon }} {{ group.label }}
+{% for item in group.items %}
+
+### [{{ item.title | plain }}]({{ item.url }}){% if item.impact == "negative" %} ▼ {{ digest.negative_label }}{% elif item.impact == "positive" %} ▲ {{ digest.positive_label }}{% endif %}
+
+{{ item.source }} · {{ t.relevance }} {{ item.relevance }}/10
+
+{{ item.summary }}
+{% for point in item.key_points %}
+- {{ point }}
+{% endfor %}
+{% if item.also_covered_by %}
+
+{{ t.also_reported_by }}: {% for link in item.also_covered_by %}[{{ link.source }}]({{ link.url }}){{ ", " if not loop.last }}{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endfor %}
+
+---
+{% if digest.analysis_fallback %}
+_{{ t.fallback_note }}_
+{% endif %}
+_{{ t.generated_by.format(when=(digest.generated_at | datetime)) }}_

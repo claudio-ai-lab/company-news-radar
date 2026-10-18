@@ -1,0 +1,26 @@
+# Offline-Variante des deutschen Beispiels: lokaler Fixture-Feed, keine Netzwerk- und
+# keine API-Schlüssel nötig.
+#
+#   newsradar run -c examples/stadtwerke-musterstadt/offline.yaml
+
+extends: config.yaml
+
+sources:
+  - name: Musterstadt-Nachrichten
+    path: fixtures/musterstadt-nachrichten.xml
+    language: de
+    priority: 2
+    max_age_hours: null
+
+llm:
+  default: {provider: fake, model: keyword-heuristic}
+
+pipeline:
+  scrape:
+    enabled: false
+
+storage:
+  url: sqlite:///out/stadtwerke-musterstadt-offline/radar.db
+
+output:
+  dir: out/stadtwerke-musterstadt-offline

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Invented articles for the offline demo. All companies and events are fictional. -->
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<channel>
+  <title>Example Wire (fictional)</title>
+  <link>https://example.com/wire</link>
+  <description>Fictional business wire used for the offline demo</description>
+
+  <item>
+    <title>Nordwerk Castings to close Saxony foundry, shift output to Poland</title>
+    <link>https://example.com/wire/nordwerk-castings-close-saxony-foundry?utm_source=rss</link>
+    <pubDate>Fri, 16 Oct 2026 07:10:00 GMT</pubDate>
+    <description>The aluminium casting supplier announced a plant closure in Saxony with 240 job cuts.</description>
+    <content:encoded><![CDATA[<p>Nordwerk Castings will close its foundry in Saxony by the end of March 2027, the company said on Friday. Production of aluminium housings is to move to its plant near Wroclaw in Poland. The closure affects 240 employees. Nordwerk said customers would receive transition plans by mid-November and that delivery volumes should remain stable during the move.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Aluminium prices jump 6% as European smelter cuts output</title>
+    <link>https://example.com/wire/aluminium-prices-jump-smelter-cuts-output</link>
+    <pubDate>Fri, 16 Oct 2026 08:30:00 GMT</pubDate>
+    <description>Metal prices rose after a smelter announced capacity cuts, citing high energy prices.</description>
+    <content:encoded><![CDATA[<p>Benchmark aluminium prices rose 6% this week after a large European smelter said it would cut output by a third. The operator blamed electricity costs, which it said had doubled since the summer. Traders expect regional premiums to stay elevated until at least January. Several rolling mills told customers to expect surcharges on November deliveries.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Port strike halts container traffic for second day</title>
+    <link>https://example.com/wire/port-strike-halts-container-traffic</link>
+    <pubDate>Fri, 16 Oct 2026 09:05:00 GMT</pubDate>
+    <description>A strike by dock workers has stopped container handling, creating a growing shipping backlog.</description>
+    <content:encoded><![CDATA[<p>A strike by dock workers at one of northern Europe's largest container ports entered its second day on Friday. About 40 vessels are waiting at anchor, according to the port authority. Unions are demanding a 9% pay rise; employers have offered 5%. Freight forwarders warned that rail and truck connections to inland hubs are also delayed.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Local football club wins regional cup after penalty shootout</title>
+    <link>https://example.com/wire/football-club-wins-regional-cup</link>
+    <pubDate>Fri, 16 Oct 2026 10:00:00 GMT</pubDate>
+    <description>Supporters celebrated late into the night after the dramatic final.</description>
+    <content:encoded><![CDATA[<p>The club won the regional cup final 5-4 on penalties after a 1-1 draw. It is the team's first trophy in twelve years. The coach praised the goalkeeper, who saved two penalties.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>US to impose 25% tariffs on imported machined metal parts</title>
+    <link>https://example.com/wire/us-tariffs-machined-metal-parts</link>
+    <pubDate>Fri, 16 Oct 2026 11:20:00 GMT</pubDate>
+    <description>The new tariffs on machined components take effect in December; customs guidance is due next week.</description>
+    <content:encoded><![CDATA[<p>The United States will impose tariffs of 25% on imported machined metal components from December 1, the trade representative's office said. Parts for medical devices are not exempt. Detailed customs guidance listing the affected tariff codes is expected next week. Importers can apply for exclusions within a 60-day window.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Celebrity chef opens new restaurant in the old harbour hall</title>
+    <link>https://example.com/wire/celebrity-chef-new-restaurant</link>
+    <pubDate>Fri, 16 Oct 2026 12:00:00 GMT</pubDate>
+    <description>The tasting menu features regional produce and a long wine list.</description>
+    <content:encoded><![CDATA[<p>The restaurant seats 80 guests and opens to the public on Saturday. Reservations for the first month are already fully booked.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Euro-area manufacturing PMI rises to 51.2, factory output expands</title>
+    <link>https://example.com/wire/euro-area-manufacturing-pmi-rises</link>
+    <pubDate>Fri, 16 Oct 2026 13:15:00 GMT</pubDate>
+    <description>New orders and industrial production improved for the first time in two years.</description>
+    <content:encoded><![CDATA[<p>The euro-area manufacturing purchasing managers' index rose to 51.2 in October from 49.6, signalling expansion for the first time in two years. New orders grew at the fastest pace since 2024, led by machinery and automation equipment. Input-cost inflation also picked up, mainly because of metals and energy.</p>]]></content:encoded>
+  </item>
+
+  <item>
+    <title>Streaming service raises family subscription fee</title>
+    <link>https://example.com/wire/streaming-service-raises-fee</link>
+    <pubDate>Fri, 16 Oct 2026 14:00:00 GMT</pubDate>
+    <description>Existing customers will pay the new fee from January.</description>
+    <content:encoded><![CDATA[<p>The family plan will cost two euros more per month. The company cited higher content costs.</p>]]></content:encoded>
+  </item>
+</channel>
+</rss>

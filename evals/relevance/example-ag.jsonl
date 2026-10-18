@@ -1,0 +1,45 @@
+// Synthetic evaluation set for the fictional Example AG profile (examples/example-ag).
+// Every headline is invented. Labels follow the rubric in the profile: "relevant" means
+// the item should pass the gate; "topic" is the expected section. Several irrelevant
+// items deliberately contain topic keywords ("strike", "tariffs", "bankruptcy") and
+// several relevant ones contain few or none, to separate understanding from matching.
+{"id": "r01", "title": "Nordwerk Castings files for insolvency protection", "teaser": "The aluminium casting supplier applied for self-administration after losing two automotive contracts.", "relevant": true, "topic": "supplier_customer_health"}
+{"id": "r02", "title": "Italian forging group announces restructuring and 300 job cuts", "teaser": "The supplier of steel blanks to machinery makers will close one of its three plants.", "relevant": true, "topic": "supplier_customer_health"}
+{"id": "r03", "title": "Halvora Medical Systems recalls surgical robot arms over joint defect", "teaser": "The recall covers 1,200 units shipped since March; the company expects a charge of 40 million euros.", "relevant": true, "topic": "supplier_customer_health"}
+{"id": "r04", "title": "Rail freight strike disrupts deliveries to southern German plants", "teaser": "Unions called a 72-hour strike; logistics firms are rerouting containers by truck.", "relevant": true, "topic": "supply_chain"}
+{"id": "r05", "title": "Container freight rates rise 30% in a week as ships detour", "teaser": "Shipping lines are adding surcharges on Asia-Europe routes.", "relevant": true, "topic": "supply_chain"}
+{"id": "r06", "title": "Fire halts anodising line used by dozens of metalworking firms", "teaser": "The surface-treatment provider expects the line to restart in six weeks; customers are looking for alternatives.", "relevant": true, "topic": "supply_chain", "note": "no topic keyword"}
+{"id": "r07", "title": "Nickel jumps to two-year high after export ban by major producer", "teaser": "Stainless steel mills warned of higher alloy surcharges from next month.", "relevant": true, "topic": "input_costs"}
+{"id": "r08", "title": "European power prices spike as cold snap meets low wind output", "teaser": "Industrial electricity for December delivery rose 40% in two days.", "relevant": true, "topic": "input_costs"}
+{"id": "r09", "title": "Brentalux Steel Service raises stainless bar prices by 8%", "teaser": "The distributor cited mill surcharges and higher energy costs.", "relevant": true, "topic": "input_costs"}
+{"id": "r10", "title": "EU opens anti-dumping probe into imported aluminium extrusions", "teaser": "Provisional duties could apply from spring, the Commission said.", "relevant": true, "topic": "trade_regulation"}
+{"id": "r11", "title": "Washington tightens export controls on precision machine tools", "teaser": "Licences will be required for five-axis machines shipped to several countries.", "relevant": true, "topic": "trade_regulation"}
+{"id": "r12", "title": "Certification backlog: device makers wait up to 18 months for approval", "teaser": "Notified bodies say the queue for certificates under the EU rules for medical products keeps growing.", "relevant": true, "topic": "trade_regulation", "note": "paraphrased, few keywords"}
+{"id": "r13", "title": "Robot orders in North America rise 18% in third quarter", "teaser": "Automotive and electronics makers led the increase in automation spending, an industry association said.", "relevant": true, "topic": "demand"}
+{"id": "r14", "title": "Kestrima Automation wins record order for packaging lines", "teaser": "The order is worth 120 million euros and runs over three years.", "relevant": true, "topic": "demand"}
+{"id": "r15", "title": "German machinery orders fall for fifth straight month", "teaser": "Foreign orders dropped 9% and industrial production weakened, the industry association said.", "relevant": true, "topic": "demand"}
+{"id": "r16", "title": "Precimont Parts Group to build new plant in Hungary", "teaser": "The company plans 200 jobs and medical-grade machining capacity from 2028.", "relevant": true, "topic": "competitors"}
+{"id": "r17", "title": "Investor buys Austrian maker of implant components", "teaser": "The deal creates a precision machining group with 1,500 staff.", "relevant": true, "topic": "competitors"}
+{"id": "r18", "title": "ECB cuts deposit rate by a quarter point", "teaser": "Policymakers cited weaker growth and easing inflation.", "relevant": true, "topic": "rates_currency"}
+{"id": "r19", "title": "Dollar slides to 18-month low against the euro", "teaser": "Exporters to the US face tighter margins as the exchange rate moves.", "relevant": true, "topic": "rates_currency"}
+{"id": "r20", "title": "Surgical robotics maker delays launch after supplier dispute", "teaser": "Halvora said the delay could shift revenue into next year.", "relevant": true, "topic": "supplier_customer_health", "note": "watchlist alias only in teaser"}
+{"id": "n01", "title": "Football club enters administration as bankruptcy looms", "teaser": "The club owes players and tax authorities 30 million.", "relevant": false, "note": "keyword trap"}
+{"id": "n02", "title": "Bowling champion sets strike record at national finals", "teaser": "Twelve strikes in a row secured the title.", "relevant": false, "note": "keyword trap"}
+{"id": "n03", "title": "New mobile tariffs: operator cuts tariff prices for students", "teaser": "Prepaid customers get double data from November.", "relevant": false, "note": "keyword trap"}
+{"id": "n04", "title": "Steel band festival draws record crowds to the harbour", "teaser": "More than 40 bands performed over the weekend.", "relevant": false, "note": "keyword trap"}
+{"id": "n05", "title": "Celebrity couple announces merger of their fashion labels", "teaser": "The new brand will launch in spring.", "relevant": false}
+{"id": "n06", "title": "Recipe: salmon baked in aluminium foil with herbs", "teaser": "Ready in 25 minutes.", "relevant": false}
+{"id": "n07", "title": "Local bakery opens second shop in the old town", "teaser": "The owners hired six new staff.", "relevant": false}
+{"id": "n08", "title": "Bank launches mortgage offer for first-time buyers", "teaser": "Fixed interest rates start at 3.1% for ten years.", "relevant": false, "note": "banking, excluded by guidance"}
+{"id": "n09", "title": "City council approves new cycling lanes", "teaser": "Construction starts next summer.", "relevant": false}
+{"id": "n10", "title": "Smartphone review: the best cameras of the year", "teaser": "We tested twelve models in low light.", "relevant": false}
+{"id": "n11", "title": "Pop star cancels tour dates over illness", "teaser": "Fans will be refunded.", "relevant": false}
+{"id": "n12", "title": "Airline strike leaves holidaymakers stranded", "teaser": "A cabin-crew walkout cancelled 300 flights.", "relevant": false, "note": "passenger travel"}
+{"id": "n13", "title": "Cruise line orders three new ships for its shipping fleet", "teaser": "The orders are worth 3 billion and will be delivered from 2029.", "relevant": false, "note": "keyword trap"}
+{"id": "n14", "title": "Tech giant's quarterly profit beats expectations on cloud growth", "teaser": "Advertising revenue also rose.", "relevant": false}
+{"id": "n15", "title": "Supermarket chain recalls salad over listeria fears", "teaser": "Customers can return packs for a refund.", "relevant": false}
+{"id": "n16", "title": "Rents rise for the tenth quarter in a row", "teaser": "Demand for flats in large cities remains high.", "relevant": false}
+{"id": "n17", "title": "Crypto exchange restructuring leaves customers waiting", "teaser": "Withdrawals have been frozen for three weeks.", "relevant": false}
+{"id": "n18", "title": "Hollywood studio announces acquisition of streaming rights", "teaser": "The series will premiere next year.", "relevant": false}
+{"id": "n19", "title": "Heatwave expected for the weekend", "teaser": "Temperatures could reach 33 degrees.", "relevant": false}
+{"id": "n20", "title": "Energy drink brand launches new flavour", "teaser": "The limited edition is available from Monday.", "relevant": false}
